@@ -5,6 +5,7 @@
 ## 目录
 
 - [环境要求](#环境要求)
+- [数据获取](#数据获取)
 - [快速开始（本机）](#快速开始本机)
 - [API 后端配置](#api-后端配置)
   - [模式一：云端 API](#模式一云端-api)
@@ -13,6 +14,40 @@
 - [vLLM 部署指南](#vllm-部署指南)
 - [大规模批量 Summary](#大规模批量-summary)
 - [项目结构](#项目结构)
+
+---
+
+## 数据获取
+
+### 从 OSS 下载对话数据
+
+对话数据已上传到 OSS，使用以下脚本下载：
+
+```bash
+# 1. 安装 ossutil（如果未安装）
+curl -o /tmp/ossutil https://gosspublic.alicdn.com/ossutil/1.7.18/ossutil64
+chmod +x /tmp/ossutil
+sudo mv /tmp/ossutil /usr/local/bin/ossutil
+
+# 2. 配置 OSS 凭证
+ossutil config -e http://oss-cn-zhangjiakou.aliyuncs.com -i <your-access-key-id> -k <your-access-key-secret>
+
+# 3. 下载数据
+bash download_data.sh
+```
+
+**OSS 配置信息：**
+- **Endpoint**: `http://oss-cn-zhangjiakou.aliyuncs.com`
+- **Region**: `cn-zhangjiakou`
+- **数据路径**: `oss://quark-llm/datasets/tuyongsiqi.tysq/data-excel-0328/`
+
+**手动下载命令：**
+```bash
+ossutil cp oss://quark-llm/datasets/tuyongsiqi.tysq/data-excel-0328/downloaded_conversations.tar.gz .
+tar -xzf downloaded_conversations.tar.gz
+```
+
+> **注意**：数据文件较大（约 2GB），请确保有足够的磁盘空间。
 
 ---
 
