@@ -5,8 +5,8 @@
 set -e
 
 OSS_BUCKET="oss://quark-llm/datasets/tuyongsiqi.tysq/data-excel-0328"
-DATA_FILE="downloaded_conversations.tar.gz"
-TARGET_DIR="."
+DATA_DIR="downloaded_conversations"
+TARGET_DIR=".."
 
 echo "========================================="
 echo "从 OSS 下载对话数据"
@@ -27,28 +27,19 @@ if ! ossutil ls "$OSS_BUCKET" > /dev/null 2>&1; then
     exit 1
 fi
 
-# 检查文件是否存在
-echo "检查数据文件是否存在..."
-if ! ossutil ls "$OSS_BUCKET/$DATA_FILE" > /dev/null 2>&1; then
-    echo "错误: OSS 中不存在文件 $DATA_FILE"
-    echo "请确认文件已上传到: $OSS_BUCKET/$DATA_FILE"
+# 检查目录是否存在
+echo "检查数据目录是否存在..."
+if ! ossutil ls "$OSS_BUCKET/$DATA_DIR/" > /dev/null 2>&1; then
+    echo "错误: OSS 中不存在目录 $DATA_DIR"
+    echo "请确认数据已上传到: $OSS_BUCKET/$DATA_DIR/"
     exit 1
 fi
 
-# 下载文件
-echo "开始下载 $DATA_FILE ..."
-ossutil cp "$OSS_BUCKET/$DATA_FILE" "$TARGET_DIR/$DATA_FILE"
+# 下载目录
+echo "开始下载 $DATA_DIR 目录..."
+ossutil cp -r "$OSS_BUCKET/$DATA_DIR/" "$TARGET_DIR/$DATA_DIR/"
 
 echo "========================================="
 echo "下载完成!"
-echo "文件位置: $TARGET_DIR/$DATA_FILE"
+echo "数据位置: $TARGET_DIR/$DATA_DIR/"
 echo "========================================="
-
-# 询问是否解压
-read -p "是否立即解压文件? (y/n): " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo "解压文件..."
-    tar -xzf "$DATA_FILE"
-    echo "解压完成!"
-fi
