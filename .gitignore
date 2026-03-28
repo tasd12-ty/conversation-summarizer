@@ -4,3 +4,9 @@ processed_cache/
 .env
 *.egg-info/
 .venv/
+
+# 大文件
+*.tar.gz
+*.zip
+*.rar
+downloaded_conversations/
